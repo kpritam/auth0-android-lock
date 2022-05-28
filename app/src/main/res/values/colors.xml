@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="purple_200">#FFBB86FC</color>
+    <color name="purple_500">#FF6200EE</color>
+    <color name="purple_700">#FF3700B3</color>
+    <color name="teal_200">#FF03DAC5</color>
+    <color name="teal_700">#FF018786</color>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+    <color name="com_auth0_lock_checkable_option_error">#FF511A</color>
+    <color name="com_auth0_lock_checkable_option_success">#518C11</color>
+    <color name="com_auth0_lock_error_link">#90D1E8</color>
+
+    <color name="com_auth0_lock_form_background">#FF3700B3</color>
+    <color name="com_auth0_lock_header_background">#FF3700B3</color>
+
+    <color name="com_auth0_lock_hint_text">#D6D6D6</color>
+    <color name="com_auth0_lock_text">#FFFFFF</color>
+    <color name="com_auth0_lock_normal_text">#A6FFFFFF</color>
+    <color name="com_auth0_lock_disabled_text">#4d000000</color>
+
+    <color name="com_auth0_lock_input_field_background">#FF3700B3</color>
+    <color name="com_auth0_lock_input_field_background_disabled">#f9f9f9</color>
+    <color name="com_auth0_lock_input_field_border_error">#ff0000</color>
+    <color name="com_auth0_lock_input_field_border_focused">#A4D3D1FA</color>
+    <color name="com_auth0_lock_input_field_border_normal">#D7D7EF</color>
+
+    <color name="com_auth0_lock_link_focused">#D8D8D8</color>
+    <color name="com_auth0_lock_passwordless_link_sent_text">#c8000000</color>
+
+    <color name="com_auth0_lock_result_message">#ffffff</color>
+    <color name="com_auth0_lock_result_message_error_background">#FF3E00</color>
+    <color name="com_auth0_lock_result_message_success_background">#7ED321</color>
+
+    <color name="com_auth0_lock_submit_disabled">#e3e5e7</color>
+    <color name="com_auth0_lock_submit_normal">#7616FF</color>
+    <color name="com_auth0_lock_submit_pressed">#6300F3</color>
+
+    <color name="com_auth0_lock_tab_focused">#F9F9F9</color>
+    <color name="com_auth0_lock_tab_text">#DADADA</color>
+    <color name="com_auth0_lock_tab_underline">#325C666F</color>
+
+    <color name="com_auth0_lock_terms_background">#FF3700B3</color>
+    <color name="com_auth0_lock_terms_background_focused">#FF3700B3</color>
+    <color name="com_auth0_lock_terms_text">#D6CDCD</color>
+    <color name="com_auth0_lock_validation_error_text">#ff0000</color>
+</resources>
