@@ -1,9 +1,7 @@
 package com.auth0.sample
 
-import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import com.auth0.android.Auth0
 import com.auth0.android.authentication.AuthenticationAPIClient
@@ -14,11 +12,11 @@ import com.auth0.android.lock.Lock
 import com.auth0.android.lock.PasswordlessLock
 import com.auth0.android.management.ManagementException
 import com.auth0.android.management.UsersAPIClient
+import com.auth0.android.provider.CustomTabsOptions
 import com.auth0.android.provider.WebAuthProvider
 import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
 import com.auth0.sample.databinding.ActivityMainBinding
-import com.google.android.material.snackbar.Snackbar
 
 
 class MainActivity : AppCompatActivity() {
@@ -66,8 +64,14 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun loginWithBrowser() {
+        val ctOptions = CustomTabsOptions.newBuilder()
+            .withToolbarColor(R.color.com_auth0_lock_form_background)
+            .showTitle(true)
+            .build()
+
         // Setup the WebAuthProvider, using the custom scheme and scope.
         WebAuthProvider.login(account)
+            .withCustomTabsOptions(ctOptions)
             .withScheme(getString(R.string.com_auth0_scheme))
             .withScope("openid profile email read:current_user update:current_user_metadata")
             .withAudience("https://${getString(R.string.com_auth0_domain)}/api/v2/")
@@ -75,12 +79,12 @@ class MainActivity : AppCompatActivity() {
             // Launch the authentication passing the callback where the results will be received
             .start(this, object : Callback<Credentials, AuthenticationException> {
                 override fun onFailure(error: AuthenticationException) {
-                    showSnackBar("Failure: ${error.getCode()}")
+                    SnackBar.show(applicationContext, binding.root, "Failure: ${error.getCode()}")
                 }
 
                 override fun onSuccess(result: Credentials) {
                     cachedCredentials = result
-                    showSnackBar("Success: ${result.accessToken}")
+                    SnackBar.show(applicationContext, binding.root, "Success: ${result.accessToken}")
                     updateUI()
                     showUserProfile()
                 }
@@ -114,7 +118,7 @@ class MainActivity : AppCompatActivity() {
     private val nativeCallback = object : AuthenticationCallback() {
         override fun onAuthentication(credentials: Credentials) {
             cachedCredentials = credentials
-            showSnackBar("Success: ${credentials.accessToken}")
+            SnackBar.show(applicationContext, binding.root, "Success: ${credentials.accessToken}")
             updateUI()
             showUserProfile()
             // Authenticated
@@ -122,7 +126,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onError(error: AuthenticationException) {
             println(error)
-            showSnackBar("Failure: ${error.getCode()}")
+            SnackBar.show(applicationContext, binding.root, "Failure: ${error.getCode()}")
         }
     }
 
@@ -139,7 +143,7 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onFailure(error: AuthenticationException) {
                     updateUI()
-                    showSnackBar("Failure: ${error.getCode()}")
+                    SnackBar.show(applicationContext, binding.root, "Failure: ${error.getCode()}")
                 }
             })
     }
@@ -152,7 +156,7 @@ class MainActivity : AppCompatActivity() {
         client.userInfo(cachedCredentials!!.accessToken)
             .start(object : Callback<UserProfile, AuthenticationException> {
                 override fun onFailure(error: AuthenticationException) {
-                    showSnackBar("Failure: ${error.getCode()}")
+                    SnackBar.show(applicationContext, binding.root, "Failure: ${error.getCode()}")
                 }
 
                 override fun onSuccess(result: UserProfile) {
@@ -170,7 +174,7 @@ class MainActivity : AppCompatActivity() {
         usersClient.getProfile(cachedUserProfile!!.getId()!!)
             .start(object : Callback<UserProfile, ManagementException> {
                 override fun onFailure(error: ManagementException) {
-                    showSnackBar("Failure: ${error.getCode()}")
+                    SnackBar.show(applicationContext, binding.root, "Failure: ${error.getCode()}")
                 }
 
                 override fun onSuccess(result: UserProfile) {
@@ -191,25 +195,15 @@ class MainActivity : AppCompatActivity() {
             .updateMetadata(cachedUserProfile!!.getId()!!, metadata)
             .start(object : Callback<UserProfile, ManagementException> {
                 override fun onFailure(error: ManagementException) {
-                    showSnackBar("Failure: ${error.getCode()}")
+                    SnackBar.show(applicationContext, binding.root, "Failure: ${error.getCode()}")
                 }
 
                 override fun onSuccess(result: UserProfile) {
                     cachedUserProfile = result
                     updateUI()
-                    showSnackBar("Successful")
+                    SnackBar.show(applicationContext, binding.root, "Successful")
                 }
             })
     }
 
-    private fun showSnackBar(text: String) {
-        Snackbar.make(
-            binding.root,
-            text,
-            Snackbar.LENGTH_LONG
-        )
-            .setTextColor(ContextCompat.getColor(applicationContext, R.color.white))
-            .setBackgroundTint(ContextCompat.getColor(applicationContext, R.color.teal_200))
-            .show()
-    }
 }
