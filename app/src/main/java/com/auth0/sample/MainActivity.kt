@@ -18,6 +18,25 @@ import com.auth0.android.result.Credentials
 import com.auth0.android.result.UserProfile
 import com.auth0.sample.databinding.ActivityMainBinding
 
+// browser based => authorization code grant flow (oauth2)
+//               => hosted page on auth0 server
+//               => app -> pull hosted page from auth0
+// native/embedded
+//      => password grant flow (username + password)
+//                 => UI/pages are embedded into your application
+//                 => not open webview
+//      => passwordless (email or phone)
+//      => email or phone
+//      => otp/magic link (Swiggy, Paytm)
+// native (Android lock)
+// how do you setup MFA page at the time of sign up?
+
+// irrespective of login mode
+// how do you enable mobile as your 2FA?
+
+enum class LoginMethod {
+    Native, Passwordless, BrowserBased
+}
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,21 +47,40 @@ class MainActivity : AppCompatActivity() {
     private var cachedCredentials: Credentials? = null
     private var cachedUserProfile: UserProfile? = null
 
+    private val loginMethod = LoginMethod.Native
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        // Set up the account object with the Auth0 application details
-        account = Auth0(
-            getString(R.string.com_auth0_client_id),
-            getString(R.string.com_auth0_domain)
-        )
-
         // Bind the button click with the login action
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        binding.buttonLogin.setOnClickListener { loginNative() }
-//        binding.buttonLogin.setOnClickListener { loginPasswordLessNative() }
-//        binding.buttonLogin.setOnClickListener { loginWithBrowser() }
+
+        when (loginMethod) {
+            LoginMethod.Passwordless -> {
+                account = Auth0(
+                    getString(R.string.com_auth0_passwordless_client_id),
+                    getString(R.string.com_auth0_passwordless_domain)
+                )
+                binding.buttonLogin.setOnClickListener { loginPasswordLessNative() }
+            }
+            LoginMethod.Native -> {
+                account = Auth0(
+                    getString(R.string.com_auth0_client_id),
+                    getString(R.string.com_auth0_domain)
+                )
+                binding.buttonLogin.setOnClickListener { loginNative() }
+            }
+            LoginMethod.BrowserBased -> {
+                account = Auth0(
+                    getString(R.string.com_auth0_client_id),
+                    getString(R.string.com_auth0_domain)
+                )
+                binding.buttonLogin.setOnClickListener { loginWithBrowser() }
+            }
+        }
+
+
         binding.buttonLogout.setOnClickListener { logout() }
         binding.buttonGetMetadata.setOnClickListener { getUserMetadata() }
         binding.buttonPatchMetadata.setOnClickListener { patchUserMetadata() }
@@ -84,7 +122,11 @@ class MainActivity : AppCompatActivity() {
 
                 override fun onSuccess(result: Credentials) {
                     cachedCredentials = result
-                    SnackBar.show(applicationContext, binding.root, "Success: ${result.accessToken}")
+                    SnackBar.show(
+                        applicationContext,
+                        binding.root,
+                        "Success: ${result.accessToken}"
+                    )
                     updateUI()
                     showUserProfile()
                 }

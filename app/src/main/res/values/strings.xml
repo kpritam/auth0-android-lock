@@ -7,8 +7,10 @@
 
     <string name="com_auth0_client_id">BCmoPWJPpkPUtajw41RN7nkCLa7ygbyB</string>
     <string name="com_auth0_domain">dev-6oc6maoi.us.auth0.com</string>
-    <string name="com_auth0_scheme">demo</string>
+    <string name="com_auth0_passwordless_client_id">aeOyOrteVGtvKS88zELpEwJC1KIqF2x3</string>
+    <string name="com_auth0_passwordless_domain">dev-6oc6maoi.us.auth0.com</string>
     <string name="com_auth0_header_title">&appname;</string>
+    <string name="com_auth0_scheme">demo</string>
     <string name="log_in_btn_text">Log In</string>
     <string name="log_out_btn_text">Log Out</string>
     <string name="welcome_text">Welcome to &appname;</string>
